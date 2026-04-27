@@ -16,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-/* 🌫️ fundo */
+/* fundo */
 body::before {
   content: "";
   position: fixed;
@@ -27,7 +27,7 @@ body::before {
   z-index: -1;
 }
 
-/* 💥 overlay */
+/* overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -40,13 +40,14 @@ body::before {
   cursor: pointer;
 }
 
-/* 💚 card */
+/* card */
 .card {
   background: rgba(18,18,18,0.75);
   backdrop-filter: blur(12px);
-  padding: 25px;
+  padding: 20px;
   border-radius: 20px;
-  width: 320px;
+  width: 90%;
+  max-width: 360px;
   text-align: center;
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   opacity: 0;
@@ -59,17 +60,17 @@ body::before {
   transform: translateY(0);
 }
 
-/* 📸 foto */
+/* foto */
 .foto {
   width: 100%;
-  height: 260px;
+  height: 240px;
   object-fit: cover;
   border-radius: 14px;
   cursor: pointer;
   position: relative;
 }
 
-/* 💬 mensagem foto */
+/* mensagem foto */
 .msg-foto {
   position: absolute;
   top: 90px;
@@ -98,7 +99,7 @@ p { font-size: 13px; color: #d1d1d1; }
   color: #b3b3b3;
 }
 
-/* ▶️ player */
+/* player */
 .play-button {
   margin: 20px auto;
   width: 62px;
@@ -109,11 +110,6 @@ p { font-size: 13px; color: #d1d1d1; }
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: 0.2s;
-}
-
-.play-button:active {
-  transform: scale(0.92);
 }
 
 .triangle {
@@ -135,7 +131,7 @@ p { font-size: 13px; color: #d1d1d1; }
   background: white;
 }
 
-/* 💗 corações */
+/* corações */
 .coracao {
   position: fixed;
   bottom: 10px;
@@ -151,10 +147,15 @@ p { font-size: 13px; color: #d1d1d1; }
   100% { transform: translateY(-450px); opacity: 0; }
 }
 
-/* iframe */
-iframe {
-  margin-top: 15px;
-  border-radius: 12px;
+/* mobile ajuste fino */
+@media (max-width: 400px) {
+  .foto {
+    height: 200px;
+  }
+
+  h1 {
+    font-size: 16px;
+  }
 }
 </style>
 </head>
@@ -176,7 +177,7 @@ iframe {
 
   <p>amo amar você, de verdade… é tudo pra mim 🤍</p>
 
-  <div class="tocando">tocando agora: Papo de Undaia kkk 💚</div>
+  <div class="tocando">tocando agora: Papo de Undaia 💚</div>
 
   <div class="contador" id="contador"></div>
 
@@ -195,13 +196,11 @@ iframe {
 
 let tocando = false;
 
-/* entrar */
 function entrar() {
   document.querySelector(".overlay").style.display = "none";
   document.getElementById("card").classList.add("show");
 }
 
-/* mensagem foto */
 function mostrarMensagem() {
   const msg = document.getElementById("msgFoto");
   msg.style.display = "block";
@@ -215,10 +214,8 @@ function mostrarMensagem() {
   }, 2000);
 }
 
-/* player */
 function toggleMusica() {
   const icone = document.getElementById("icone");
-
   tocando = !tocando;
 
   if (tocando) {
@@ -235,7 +232,6 @@ function toggleMusica() {
   }
 }
 
-/* corações */
 function criarCoracao() {
   const coracao = document.createElement("div");
   coracao.classList.add("coracao");
@@ -248,23 +244,18 @@ function criarCoracao() {
   setTimeout(() => coracao.remove(), 3000);
 }
 
-/* 💚 contador ARRUMADO */
+/* ✔️ contador corrigido */
 function atualizarContador() {
-  const inicio = new Date(2026, 2, 14); // 14 de março de 2026
+  const inicio = new Date(2026, 2, 14); // março = 2 (CORRETO)
   const agora = new Date();
 
-  const diff = agora.getTime() - inicio.getTime();
-
+  const diff = agora - inicio;
   const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
 
-  const el = document.getElementById("contador");
-
-  if (el) {
-    el.innerText = `💚 ${dias} dias juntos`;
-  }
+  document.getElementById("contador").innerText =
+    `💚 ${dias} dias juntos`;
 }
 
-/* 🔥 IMPORTANTE: chamar função */
 atualizarContador();
 setInterval(atualizarContador, 60000);
 
