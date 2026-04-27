@@ -6,17 +6,15 @@
 <title>Davi 💚</title>
 
 <style>
-* { box-sizing: border-box; }
-
 body {
   margin: 0;
   height: 100vh;
-  font-family: Arial, sans-serif;
+  font-family: Arial;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
   overflow: hidden;
+  color: white;
 }
 
 body::before {
@@ -29,7 +27,7 @@ body::before {
   z-index: -1;
 }
 
-/* OVERLAY 100% CLICK SAFE */
+/* overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -37,35 +35,20 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 9999;
   cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-  touch-action: manipulation;
-}
-
-.overlay.hide {
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.5s ease;
-}
-
-.overlay h2 {
-  pointer-events: none;
+  z-index: 10;
 }
 
 .card {
-  background: rgba(18,18,18,0.75);
-  backdrop-filter: blur(12px);
-  padding: 22px;
+  width: 320px;
+  background: rgba(20,20,20,0.75);
+  backdrop-filter: blur(10px);
   border-radius: 20px;
-  width: min(90vw, 340px);
+  padding: 20px;
   text-align: center;
-  box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   opacity: 0;
   transform: translateY(20px);
-  transition: 0.8s ease;
-  border: 1px solid rgba(255,255,255,0.08);
+  transition: 0.6s;
 }
 
 .card.show {
@@ -75,102 +58,32 @@ body::before {
 
 .foto {
   width: 100%;
-  height: 260px;
+  height: 250px;
   object-fit: cover;
   border-radius: 14px;
-  cursor: pointer;
 }
 
-.msg-foto {
-  position: absolute;
-  top: 90px;
-  left: 50%;
-  transform: translateX(-50%);
-  background: rgba(0,0,0,0.6);
-  padding: 10px 14px;
-  border-radius: 12px;
-  font-size: 13px;
-  opacity: 0;
-  transition: 0.3s;
-}
+h1 { font-size: 18px; }
+p { font-size: 13px; color: #ccc; }
 
-.msg-foto.show { opacity: 1; }
-
-h1 { font-size: 18px; margin: 15px 0 5px; }
-p { font-size: 13px; color: #d1d1d1; }
-
-.tocando { font-size: 12px; color: #1db954; margin-top: 10px; }
-
-.contador { margin-top: 8px; font-size: 12px; color: #b3b3b3; }
-
-.progress-container {
-  width: 100%;
-  height: 6px;
-  background: rgba(255,255,255,0.15);
-  border-radius: 10px;
-  margin-top: 12px;
-  overflow: hidden;
-}
-
-.progress {
-  height: 100%;
-  width: 0%;
-  background: #1db954;
-}
-
-.player-controls {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 12px;
-  margin-top: 12px;
+.contador {
+  font-size: 12px;
+  margin-top: 10px;
+  color: #aaa;
 }
 
 .btn {
+  margin-top: 15px;
   background: #1db954;
   border: none;
-  color: white;
-  padding: 8px 10px;
+  padding: 10px;
   border-radius: 10px;
+  color: white;
   cursor: pointer;
 }
-
-.play-button {
-  width: 55px;
-  height: 55px;
-  background: #1db954;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-}
-
-.triangle {
-  width: 0;
-  height: 0;
-  border-left: 16px solid white;
-  border-top: 9px solid transparent;
-  border-bottom: 9px solid transparent;
-}
-
-.pause { display: flex; gap: 4px; }
-.bar { width: 5px; height: 16px; background: white; }
-
-.coracao {
-  position: fixed;
-  font-size: 16px;
-  animation: subir 4s linear forwards;
-  pointer-events: none;
-}
-
-@keyframes subir {
-  0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-600px); opacity: 0; }
-}
-
 </style>
 </head>
+
 <body>
 
 <div class="overlay" id="overlay">
@@ -179,147 +92,56 @@ p { font-size: 13px; color: #d1d1d1; }
 
 <div class="card" id="card">
 
-  <div style="position:relative;">
-    <img src="foto.jpg" class="foto" id="foto">
-    <div class="msg-foto" id="msgFoto">eu te amo 💚</div>
-  </div>
+  <img src="foto.jpg" class="foto">
 
-  <h1>Eu te amo 🤍</h1>
-  <p>amo amar você, de verdade… é tudo pra mim 🤍</p>
+  <h1>Eu te amo 💚</h1>
+  <p>amo você demais</p>
 
-  <div class="tocando" id="musicaNome">tocando agora</div>
+  <div class="contador" id="contador"></div>
 
-  <div class="contador" id="tempoJuntos"></div>
+  <button class="btn" onclick="tocar()">tocar música 💚</button>
 
-  <audio id="audio" preload="auto"></audio>
-
-  <div class="progress-container">
-    <div class="progress" id="progress"></div>
-  </div>
-
-  <div class="player-controls">
-    <button class="btn" id="prev">⏮</button>
-
-    <div class="play-button" id="play">
-      <div id="icone" class="triangle"></div>
-    </div>
-
-    <button class="btn" id="next">⏭</button>
-  </div>
-
-  <button class="btn" id="hearts">💖 modo corações</button>
+  <audio id="audio" src="musica.mp3"></audio>
 
 </div>
 
 <script>
-let tocando = false;
-let index = 0;
 
-const playlist = [
-  { nome: "Papo de Undaia", src: "musica1.mp3" },
-  { nome: "Outra música", src: "musica2.mp3" }
-];
+let iniciou = false;
 
-const audio = document.getElementById("audio");
-const progress = document.getElementById("progress");
-const nome = document.getElementById("musicaNome");
-const overlay = document.getElementById("overlay");
+/* 💚 START 100% À PROVA DE BUG */
+function iniciar() {
+  if (iniciou) return;
+  iniciou = true;
 
-function loadTrack(i){
-  audio.src = playlist[i].src;
-  nome.innerText = "tocando agora: " + playlist[i].nome;
-}
-
-function entrar(){
-  overlay.classList.add("hide");
+  document.getElementById("overlay").style.display = "none";
   document.getElementById("card").classList.add("show");
 }
 
-function toggleMusica(){
-  const icone = document.getElementById("icone");
-  tocando = !tocando;
+/* garante clique em QUALQUER celular */
+document.getElementById("overlay").onclick = iniciar;
+document.getElementById("overlay").ontouchstart = iniciar;
 
-  if(tocando){
-    audio.play().catch(()=>{});
-    icone.className = "pause";
-    icone.innerHTML = '<div class="bar"></div><div class="bar"></div>';
-    updateProgress();
-  } else {
-    audio.pause();
-    icone.className = "triangle";
-    icone.innerHTML = "";
-  }
+/* música */
+function tocar() {
+  const audio = document.getElementById("audio");
+  audio.play();
 }
 
-function updateProgress(){
-  if(!tocando || !audio.duration) return;
-  progress.style.width = (audio.currentTime / audio.duration) * 100 + "%";
-  requestAnimationFrame(updateProgress);
-}
-
-function nextTrack(){
-  index = (index + 1) % playlist.length;
-  loadTrack(index);
-  if(tocando) audio.play();
-}
-
-function prevTrack(){
-  index = (index - 1 + playlist.length) % playlist.length;
-  loadTrack(index);
-  if(tocando) audio.play();
-}
-
-function atualizarTempo(){
-  const inicio = new Date(2026,2,14);
+/* contador simples e estável */
+function contador() {
+  const inicio = new Date(2026, 2, 14);
   const agora = new Date();
-  const diff = agora - inicio;
 
-  const segundos = Math.floor(diff/1000);
-  const minutos = Math.floor(segundos/60);
-  const horas = Math.floor(minutos/60);
-  const dias = Math.floor(horas/24);
-  const meses = Math.floor(dias/30);
-  const anos = Math.floor(meses/12);
+  const dias = Math.floor((agora - inicio) / (1000 * 60 * 60 * 24));
 
-  document.getElementById("tempoJuntos").innerText =
-  `💚 ${anos}a ${meses%12}m ${dias%30}d ${horas%24}h ${minutos%60}m ${segundos%60}s`;
+  document.getElementById("contador").innerText =
+    `💚 ${dias} dias juntos`;
 }
 
-function criarCoracao(){
-  const c = document.createElement("div");
-  c.classList.add("coracao");
-  c.innerText = "💗";
-  c.style.left = Math.random()*window.innerWidth + "px";
-  document.body.appendChild(c);
-  setTimeout(()=>c.remove(),4000);
-}
+contador();
+setInterval(contador, 60000);
 
-function toggleHearts(){
-  for(let i=0;i<10;i++) setTimeout(criarCoracao,i*100);
-}
-
-function mostrarMensagem(){
-  const msg = document.getElementById("msgFoto");
-  msg.classList.add("show");
-  setTimeout(()=>msg.classList.remove("show"),2000);
-  for(let i=0;i<6;i++) setTimeout(criarCoracao,i*120);
-}
-
-/* 💚 FIX FINAL SEM BUG */
-window.addEventListener("DOMContentLoaded",()=>{
-  loadTrack(index);
-  atualizarTempo();
-  setInterval(atualizarTempo,1000);
-
-  overlay.addEventListener("click",entrar);
-  overlay.addEventListener("touchstart",entrar);
-
-  document.getElementById("play").addEventListener("click",toggleMusica);
-  document.getElementById("next").addEventListener("click",nextTrack);
-  document.getElementById("prev").addEventListener("click",prevTrack);
-  document.getElementById("hearts").addEventListener("click",toggleHearts);
-  document.getElementById("foto").addEventListener("click",mostrarMensagem);
-});
 </script>
 
 </body>
