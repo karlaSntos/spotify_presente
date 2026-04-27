@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Davi 💚</title>
+
+  <style>
+    body {
+      margin: 0;
+      background: linear-gradient(to bottom, #1db954, #121212);
+      color: white;
+      font-family: Arial, sans-serif;
+      text-align: center;
+    }
+
+    .container {
+      margin-top: 60px;
+    }
+
+    .foto {
+      width: 260px;
+      height: 260px;
+      object-fit: cover;
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0,0,0,0.6);
+      transition: 0.3s;
+    }
+
+    .foto:hover {
+      transform: scale(1.03);
+    }
+
+    h1 {
+      margin-top: 20px;
+      font-size: 28px;
+    }
+
+    p {
+      margin: 20px auto;
+      width: 80%;
+      max-width: 400px;
+      color: #e0e0e0;
+      line-height: 1.6;
+    }
+
+    .tocando {
+      margin-top: 10px;
+      font-size: 16px;
+      color: #1db954;
+      animation: piscar 1.5s infinite;
+    }
+
+    @keyframes piscar {
+      0% { opacity: 1; }
+      50% { opacity: 0.4; }
+      100% { opacity: 1; }
+    }
+
+    .contador {
+      margin-top: 10px;
+      font-size: 14px;
+      color: #b3b3b3;
+    }
+
+    .play-button {
+      margin: 25px auto;
+      width: 70px;
+      height: 70px;
+      background-color: #1db954;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .play-button:hover {
+      transform: scale(1.1);
+    }
+
+    .triangle {
+      width: 0;
+      height: 0;
+      border-left: 20px solid white;
+      border-top: 12px solid transparent;
+      border-bottom: 12px solid transparent;
+      margin-left: 5px;
+    }
+
+    .pause {
+      display: flex;
+      gap: 5px;
+    }
+
+    .bar {
+      width: 6px;
+      height: 20px;
+      background: white;
+    }
+
+    iframe {
+      display: none;
+      margin-top: 20px;
+      border-radius: 12px;
+    }
+
+    #coracoes-container {
+      position: fixed;
+      bottom: 0;
+      left: 50%;
+      transform: translateX(-50%);
+      pointer-events: none;
+    }
+
+    .coracao {
+      position: absolute;
+      color: #ff4d6d;
+      font-size: 20px;
+      animation: subir 2s linear forwards;
+    }
+
+    @keyframes subir {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 1;
+      }
+      100% {
+        transform: translateY(-200px) scale(1.5);
+        opacity: 0;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="container">
+
+    <img src="foto.jpg" class="foto">
+
+    <h1>Davi, minha playlist favorita 🎶</h1>
+
+    <p>
+      amo amar você, de verdade… é simples, mas ao mesmo tempo é tudo pra mim. 
+      é tão leve, tão bom, parece que tudo fica mais tranquilo quando penso na gente. 
+      você me faz bem de um jeito que nem sei explicar, só sei que gosto muito disso, 
+      de você, da gente 🤍
+    </p>
+
+    <div class="tocando">tocando agora: Davi ❤️</div>
+    <div class="contador" id="contador"></div>
+
+    <div class="play-button" onclick="toggleMusica()">
+      <div id="icone" class="triangle"></div>
+    </div>
+
+    <iframe id="player"
+      src="https://open.spotify.com/embed/track/SEU_LINK_AQUI"
+      width="300" height="80">
+    </iframe>
+
+  </div>
+
+  <div id="coracoes-container"></div>
+
+  <script>
+    let tocando = false;
+
+    function toggleMusica() {
+      const player = document.getElementById("player");
+      const icone = document.getElementById("icone");
+
+      tocando = !tocando;
+
+      if (tocando) {
+        player.style.display = "block";
+        icone.className = "pause";
+        icone.innerHTML = '<div class="bar"></div><div class="bar"></div>';
+
+        for (let i = 0; i < 10; i++) {
+          setTimeout(criarCoracao, i * 150);
+        }
+
+      } else {
+        player.style.display = "none";
+        icone.className = "triangle";
+        icone.innerHTML = '';
+      }
+    }
+
+    function criarCoracao() {
+      const container = document.getElementById("coracoes-container");
+      const coracao = document.createElement("div");
+
+      coracao.classList.add("coracao");
+      coracao.innerText = "💗";
+      coracao.style.left = Math.random() * 100 + "px";
+
+      container.appendChild(coracao);
+
+      setTimeout(() => {
+        coracao.remove();
+      }, 2000);
+    }
+
+    function atualizarContador() {
+      const inicio = new Date("2024-01-01"); // MUDA AQUI
+      const agora = new Date();
+
+      const diff = agora - inicio;
+
+      const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+      const horas = Math.floor((diff / (1000 * 60 * 60)) % 24);
+      const minutos = Math.floor((diff / (1000 * 60)) % 60);
+
+      document.getElementById("contador").innerText =
+        dias + " dias, " + horas + "h e " + minutos + "min juntos 💚";
+    }
+
+    setInterval(atualizarContador, 1000);
+    atualizarContador();
+  </script>
+
+</body>
+</html>
