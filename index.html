@@ -2,9 +2,12 @@
 <html lang="pt-br">
 <head>
 <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Davi 💚</title>
 
 <style>
+* { box-sizing: border-box; }
+
 body {
   margin: 0;
   height: 100vh;
@@ -16,18 +19,16 @@ body {
   overflow: hidden;
 }
 
-/* 🌫️ fundo */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background: url("foto.jpg") center/cover no-repeat;
-  filter: blur(22px) brightness(0.35);
+  filter: blur(18px) brightness(0.35);
   transform: scale(1.1);
   z-index: -1;
 }
 
-/* 💥 overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -35,23 +36,28 @@ body::before {
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
   flex-direction: column;
   cursor: pointer;
+  transition: opacity 0.5s ease;
 }
 
-/* 💚 card */
+.overlay.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
 .card {
   background: rgba(18,18,18,0.75);
   backdrop-filter: blur(12px);
-  padding: 25px;
+  padding: 22px;
   border-radius: 20px;
-  width: 320px;
+  width: min(90vw, 340px);
   text-align: center;
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   opacity: 0;
   transform: translateY(20px);
   transition: 0.8s ease;
+  border: 1px solid rgba(255,255,255,0.08);
 }
 
 .card.show {
@@ -59,17 +65,14 @@ body::before {
   transform: translateY(0);
 }
 
-/* 📸 foto */
 .foto {
   width: 100%;
   height: 260px;
   object-fit: cover;
   border-radius: 14px;
   cursor: pointer;
-  position: relative;
 }
 
-/* 💬 mensagem foto */
 .msg-foto {
   position: absolute;
   top: 90px;
@@ -79,194 +82,233 @@ body::before {
   padding: 10px 14px;
   border-radius: 12px;
   font-size: 13px;
-  display: none;
+  opacity: 0;
+  transition: 0.3s;
 }
 
-/* textos */
+.msg-foto.show {
+  opacity: 1;
+}
+
 h1 { font-size: 18px; margin: 15px 0 5px; }
 p { font-size: 13px; color: #d1d1d1; }
 
-.tocando {
-  font-size: 12px;
-  color: #1db954;
-  margin-top: 10px;
+.tocando { font-size: 12px; color: #1db954; margin-top: 10px; }
+
+.contador { margin-top: 8px; font-size: 12px; color: #b3b3b3; }
+
+.progress-container {
+  width: 100%; height: 6px;
+  background: rgba(255,255,255,0.15);
+  border-radius: 10px;
+  margin-top: 12px;
+  overflow: hidden;
 }
 
-.contador {
-  margin-top: 10px;
-  font-size: 12px;
-  color: #b3b3b3;
+.progress {
+  height: 100%; width: 0%;
+  background: #1db954;
 }
 
-/* ▶️ player */
+.player-controls {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+  margin-top: 12px;
+}
+
+.btn {
+  background: #1db954;
+  border: none;
+  color: white;
+  padding: 8px 10px;
+  border-radius: 10px;
+  cursor: pointer;
+}
+
 .play-button {
-  margin: 20px auto;
-  width: 62px;
-  height: 62px;
+  width: 55px;
+  height: 55px;
   background: #1db954;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
-  transition: 0.2s;
-}
-
-.play-button:active {
-  transform: scale(0.92);
 }
 
 .triangle {
   width: 0;
   height: 0;
-  border-left: 18px solid white;
-  border-top: 10px solid transparent;
-  border-bottom: 10px solid transparent;
+  border-left: 16px solid white;
+  border-top: 9px solid transparent;
+  border-bottom: 9px solid transparent;
 }
 
-.pause {
-  display: flex;
-  gap: 4px;
-}
+.pause { display: flex; gap: 4px; }
+.bar { width: 5px; height: 16px; background: white; }
 
-.bar {
-  width: 5px;
-  height: 18px;
-  background: white;
-}
-
-/* 💗 corações */
 .coracao {
   position: fixed;
-  bottom: 10px;
   font-size: 16px;
-  color: rgba(255, 105, 135, 0.9);
-  animation: subir 3s ease-out forwards;
+  animation: subir 4s linear forwards;
   pointer-events: none;
-  z-index: 999;
 }
 
 @keyframes subir {
   0% { transform: translateY(0); opacity: 1; }
-  100% { transform: translateY(-450px); opacity: 0; }
+  100% { transform: translateY(-600px); opacity: 0; }
 }
 
-/* iframe */
-iframe {
-  margin-top: 15px;
-  border-radius: 12px;
-}
 </style>
 </head>
-
 <body>
 
-<div class="overlay" onclick="entrar()">
+<div class="overlay" id="overlay">
   <h2>clique para começar 💚</h2>
 </div>
 
 <div class="card" id="card">
 
   <div style="position:relative;">
-    <img src="foto.jpg" class="foto" onclick="mostrarMensagem()">
+    <img src="foto.jpg" class="foto" id="foto">
     <div class="msg-foto" id="msgFoto">eu te amo 💚</div>
   </div>
 
   <h1>Eu te amo 🤍</h1>
-
   <p>amo amar você, de verdade… é tudo pra mim 🤍</p>
 
-  <div class="tocando">tocando agora: Papo de Undaia 💚</div>
+  <div class="tocando" id="musicaNome">tocando agora</div>
 
-  <div class="contador" id="contador"></div>
+  <div class="contador" id="tempoJuntos"></div>
 
-  <div class="play-button" onclick="toggleMusica()">
-    <div id="icone" class="triangle"></div>
+  <audio id="audio"></audio>
+
+  <div class="progress-container">
+    <div class="progress" id="progress"></div>
   </div>
 
-  <iframe
-    src="https://open.spotify.com/embed/track/4HQ4VFKOJRnTGZlYOOgrr6"
-    width="100%" height="80">
-  </iframe>
+  <div class="player-controls">
+    <button class="btn" id="prev">⏮</button>
+
+    <div class="play-button" id="play">
+      <div id="icone" class="triangle"></div>
+    </div>
+
+    <button class="btn" id="next">⏭</button>
+  </div>
+
+  <button class="btn" id="hearts">💖 modo corações</button>
 
 </div>
 
 <script>
-
 let tocando = false;
+let index = 0;
 
-/* entrar */
-function entrar() {
-  document.querySelector(".overlay").style.display = "none";
+const playlist = [
+  { nome: "Papo de Undaia", src: "musica1.mp3" },
+  { nome: "Outra música", src: "musica2.mp3" }
+];
+
+const audio = document.getElementById("audio");
+const progress = document.getElementById("progress");
+const nome = document.getElementById("musicaNome");
+
+function loadTrack(i){
+  audio.src = playlist[i].src;
+  nome.innerText = "tocando agora: " + playlist[i].nome;
+}
+
+function entrar(){
+  document.getElementById("overlay").classList.add("hide");
   document.getElementById("card").classList.add("show");
 }
 
-/* mensagem foto */
-function mostrarMensagem() {
-  const msg = document.getElementById("msgFoto");
-  msg.style.display = "block";
-
-  for (let i = 0; i < 7; i++) {
-    setTimeout(criarCoracao, i * 120);
-  }
-
-  setTimeout(() => {
-    msg.style.display = "none";
-  }, 2000);
-}
-
-/* player */
-function toggleMusica() {
+function toggleMusica(){
   const icone = document.getElementById("icone");
-
   tocando = !tocando;
 
-  if (tocando) {
+  if(tocando){
+    audio.play().catch(()=>{});
     icone.className = "pause";
     icone.innerHTML = '<div class="bar"></div><div class="bar"></div>';
-
-    for (let i = 0; i < 10; i++) {
-      setTimeout(criarCoracao, i * 120);
-    }
-
+    updateProgress();
   } else {
+    audio.pause();
     icone.className = "triangle";
     icone.innerHTML = "";
   }
 }
 
-/* corações */
-function criarCoracao() {
-  const coracao = document.createElement("div");
-  coracao.classList.add("coracao");
-  coracao.innerText = "💗";
-
-  coracao.style.left = Math.random() * window.innerWidth + "px";
-
-  document.body.appendChild(coracao);
-
-  setTimeout(() => coracao.remove(), 3000);
+function updateProgress(){
+  if(!tocando || !audio.duration) return;
+  progress.style.width = (audio.currentTime / audio.duration) * 100 + "%";
+  requestAnimationFrame(updateProgress);
 }
 
-/* 💚 contador ARRUMADO */
-function atualizarContador() {
-  const inicio = new Date(2026, 2, 14); // 14 de março de 2026
+function nextTrack(){
+  index = (index + 1) % playlist.length;
+  loadTrack(index);
+  if(tocando) audio.play();
+}
+
+function prevTrack(){
+  index = (index - 1 + playlist.length) % playlist.length;
+  loadTrack(index);
+  if(tocando) audio.play();
+}
+
+function atualizarTempo(){
+  const inicio = new Date(2026,2,14);
   const agora = new Date();
+  const diff = agora - inicio;
 
-  const diff = agora.getTime() - inicio.getTime();
+  const segundos = Math.floor(diff/1000);
+  const minutos = Math.floor(segundos/60);
+  const horas = Math.floor(minutos/60);
+  const dias = Math.floor(horas/24);
+  const meses = Math.floor(dias/30);
+  const anos = Math.floor(meses/12);
 
-  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
-
-  const el = document.getElementById("contador");
-
-  if (el) {
-    el.innerText = `💚 ${dias} dias juntos`;
-  }
+  document.getElementById("tempoJuntos").innerText =
+  `💚 ${anos}a ${meses%12}m ${dias%30}d ${horas%24}h ${minutos%60}m ${segundos%60}s`;
 }
-/* 🔥 IMPORTANTE: chamar função */
-atualizarContador();
-setInterval(atualizarContador, 60000);
 
+function criarCoracao(){
+  const c = document.createElement("div");
+  c.classList.add("coracao");
+  c.innerText = "💗";
+  c.style.left = Math.random()*window.innerWidth + "px";
+  document.body.appendChild(c);
+  setTimeout(()=>c.remove(),4000);
+}
+
+function toggleHearts(){
+  for(let i=0;i<10;i++) setTimeout(criarCoracao,i*100);
+}
+
+function mostrarMensagem(){
+  const msg = document.getElementById("msgFoto");
+  msg.classList.add("show");
+  setTimeout(()=>msg.classList.remove("show"),2000);
+  for(let i=0;i<6;i++) setTimeout(criarCoracao,i*120);
+}
+
+/* EVENTOS (sem bug) */
+window.addEventListener("load",()=>{
+  loadTrack(index);
+  atualizarTempo();
+  setInterval(atualizarTempo,1000);
+
+  document.getElementById("overlay").addEventListener("click",entrar);
+  document.getElementById("play").addEventListener("click",toggleMusica);
+  document.getElementById("next").addEventListener("click",nextTrack);
+  document.getElementById("prev").addEventListener("click",prevTrack);
+  document.getElementById("hearts").addEventListener("click",toggleHearts);
+  document.getElementById("foto").addEventListener("click",mostrarMensagem);
+});
 </script>
 
 </body>
