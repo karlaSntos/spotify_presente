@@ -16,39 +16,42 @@ body {
   overflow: hidden;
 }
 
+/* 🌫️ fundo blur */
 body::before {
   content: "";
   position: fixed;
   inset: 0;
   background: url("foto.jpg") center/cover no-repeat;
-  filter: blur(20px) brightness(0.4);
+  filter: blur(22px) brightness(0.35);
+  transform: scale(1.1);
   z-index: -1;
 }
 
+/* 💥 tela inicial */
 .overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0,0,0,0.9);
+  background: rgba(0,0,0,0.92);
   display: flex;
   align-items: center;
   justify-content: center;
   z-index: 10;
   flex-direction: column;
   cursor: pointer;
-  transition: 1s;
 }
 
+/* 💚 card */
 .card {
-  background: rgba(18,18,18,0.8);
-  backdrop-filter: blur(10px);
+  background: rgba(18,18,18,0.75);
+  backdrop-filter: blur(12px);
   padding: 25px;
   border-radius: 20px;
-  width: 300px;
+  width: 320px;
   text-align: center;
   box-shadow: 0 10px 40px rgba(0,0,0,0.6);
   opacity: 0;
   transform: translateY(20px);
-  transition: 1s;
+  transition: 0.8s ease;
 }
 
 .card.show {
@@ -56,28 +59,36 @@ body::before {
   transform: translateY(0);
 }
 
+/* 📸 foto */
 .foto {
   width: 100%;
-  height: 250px;
+  height: 260px;
   object-fit: cover;
-  border-radius: 12px;
-  position: relative;
+  border-radius: 14px;
+  cursor: pointer;
 }
 
+/* 💬 mensagem na foto */
 .msg-foto {
   position: absolute;
   top: 90px;
   left: 50%;
   transform: translateX(-50%);
   background: rgba(0,0,0,0.6);
-  padding: 10px 15px;
-  border-radius: 10px;
+  padding: 10px 14px;
+  border-radius: 12px;
   font-size: 13px;
   display: none;
+  animation: aparecer 0.4s ease;
 }
 
-h1 { font-size: 18px; margin: 15px 0 5px; }
+@keyframes aparecer {
+  from { transform: translateX(-50%) scale(0.8); opacity: 0; }
+  to { transform: translateX(-50%) scale(1); opacity: 1; }
+}
 
+/* 💬 textos */
+h1 { font-size: 18px; margin: 15px 0 5px; }
 p { font-size: 13px; color: #d1d1d1; }
 
 .tocando {
@@ -92,16 +103,22 @@ p { font-size: 13px; color: #d1d1d1; }
   color: #b3b3b3;
 }
 
+/* ▶️ player */
 .play-button {
   margin: 20px auto;
-  width: 60px;
-  height: 60px;
+  width: 62px;
+  height: 62px;
   background: #1db954;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
   cursor: pointer;
+  transition: 0.2s;
+}
+
+.play-button:active {
+  transform: scale(0.92);
 }
 
 .triangle {
@@ -123,23 +140,26 @@ p { font-size: 13px; color: #d1d1d1; }
   background: white;
 }
 
-iframe {
-  margin-top: 15px;
-  border-radius: 12px;
-}
-
+/* 💗 corações */
 .coracao {
   position: fixed;
-  bottom: 0;
-  font-size: 14px;
-  color: rgba(255, 77, 109, 0.6);
-  animation: subir 4s linear forwards;
+  bottom: 10px;
+  font-size: 16px;
+  color: rgba(255, 105, 135, 0.9);
+  animation: subir 3s ease-out forwards;
+  pointer-events: none;
+  z-index: 999;
 }
 
 @keyframes subir {
-  0% { transform: translateY(0); opacity: 0; }
-  20% { opacity: 1; }
-  100% { transform: translateY(-300px); opacity: 0; }
+  0% { transform: translateY(0); opacity: 1; }
+  100% { transform: translateY(-450px); opacity: 0; }
+}
+
+/* iframe */
+iframe {
+  margin-top: 15px;
+  border-radius: 12px;
 }
 </style>
 </head>
@@ -152,92 +172,99 @@ iframe {
 
 <div class="card" id="card">
 
-<div style="position:relative;">
-  <img src="foto.jpg" class="foto" onclick="mostrarMensagem()">
-  <div class="msg-foto" id="msgFoto">eu te amo 💚</div>
-</div>
+  <div style="position:relative;">
+    <img src="foto.jpg" class="foto" onclick="mostrarMensagem()">
+    <div class="msg-foto" id="msgFoto">eu te amo 💚</div>
+  </div>
 
-<h1>Eu te amo 🤍</h1>
+  <h1>Eu te amo 🤍</h1>
 
-<p>
-amo amar você, de verdade… é tudo pra mim 🤍
-</p>
+  <p>amo amar você, de verdade… é tudo pra mim 🤍</p>
 
-<div class="tocando">tocando agora: Papo de undaiá kkkk ❤️</div>
+  <div class="tocando">tocando agora: 💚 música especial</div>
 
-<div class="contador" id="contador"></div>
+  <div class="contador" id="contador"></div>
 
-<div class="play-button" onclick="toggleMusica()">
-  <div id="icone" class="triangle"></div>
-</div>
+  <div class="play-button" onclick="toggleMusica()">
+    <div id="icone" class="triangle"></div>
+  </div>
 
-<iframe
-  src="https://open.spotify.com/embed/track/4HQ4VFKOJRnTGZlYOOgrr6"
-  width="100%" height="80">
-</iframe>
+  <iframe 
+    src="https://open.spotify.com/embed/track/4HQ4VFKOJRnTGZlYOOgrr6"
+    width="100%" height="80">
+  </iframe>
 
 </div>
 
 <script>
 
+let tocando = false;
+
+/* entrar */
 function entrar() {
   document.querySelector(".overlay").style.display = "none";
   document.getElementById("card").classList.add("show");
 }
 
-/* 💚 MENSAGEM NA FOTO */
+/* 💚 mensagem foto */
 function mostrarMensagem() {
   const msg = document.getElementById("msgFoto");
   msg.style.display = "block";
 
-  for (let i = 0; i < 6; i++) {
-    setTimeout(criarCoracao, i * 200);
+  for (let i = 0; i < 7; i++) {
+    setTimeout(criarCoracao, i * 120);
   }
 
   setTimeout(() => {
     msg.style.display = "none";
-  }, 2500);
+  }, 2000);
 }
 
-/* 🎧 PLAYER */
+/* ▶️ player + corações */
 function toggleMusica() {
   const icone = document.getElementById("icone");
 
-  if (icone.className === "triangle") {
+  tocando = !tocando;
+
+  if (tocando) {
     icone.className = "pause";
     icone.innerHTML = '<div class="bar"></div><div class="bar"></div>';
+
+    for (let i = 0; i < 10; i++) {
+      setTimeout(criarCoracao, i * 120);
+    }
+
   } else {
     icone.className = "triangle";
     icone.innerHTML = "";
   }
 }
 
-/* 💗 CORAÇÕES */
+/* 💗 corações */
 function criarCoracao() {
   const coracao = document.createElement("div");
   coracao.classList.add("coracao");
   coracao.innerText = "💗";
+
   coracao.style.left = Math.random() * window.innerWidth + "px";
+
   document.body.appendChild(coracao);
 
-  setTimeout(() => coracao.remove(), 4000);
+  setTimeout(() => coracao.remove(), 3000);
 }
 
-/* ⏳ CONTADOR */
+/* ⏳ contador  */
 function atualizarContador() {
-  const inicio = new Date("2024-01-01"); // MUDA AQUI
+  const inicio = new Date("2024-01-01");
   const agora = new Date();
 
-  const diff = agora - inicio;
-
-  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+  const dias = Math.floor((agora - inicio) / (1000 * 60 * 60 * 24));
 
   document.getElementById("contador").innerText =
     dias + " dias juntos 💚";
 }
 
-setInterval(atualizarContador, 1000);
-atualizarContador();
+
 
 </script>
 
