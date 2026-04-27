@@ -250,17 +250,23 @@ function criarCoracao() {
 
 /* 💚 contador ARRUMADO */
 function atualizarContador() {
-  const inicio = new Date(2026, 3, 14); // mês começa do 0
+  const inicio = new Date(2026, 3, 14); // 14 de abril de 2026
   const agora = new Date();
 
-  const dias = Math.floor((agora - inicio) / (1000 * 60 * 60 * 24));
+  const diff = agora.getTime() - inicio.getTime();
 
-  document.getElementById("contador").innerText =
-    `💚 ${dias} dias juntos`;
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  const el = document.getElementById("contador");
+
+  if (el) {
+    el.innerText = `💚 ${dias} dias juntos`;
+  }
 }
 
 /* 🔥 IMPORTANTE: chamar função */
 atualizarContador();
+setInterval(atualizarContador, 60000);
 
 </script>
 
