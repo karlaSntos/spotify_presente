@@ -181,7 +181,7 @@ iframe {
 
   <p>amo amar você, de verdade… é tudo pra mim 🤍</p>
 
-  <div class="tocando">tocando agora: Papo de undaiá kkkk</div>
+  <div class="tocando">tocando agora: Papo de undaiá kkk</div>
 
   <div class="contador" id="contador"></div>
 
@@ -261,7 +261,10 @@ function atualizarContador() {
   const dias = Math.floor((agora - inicio) / (1000 * 60 * 60 * 24));
 
   document.getElementById("contador").innerText =
-    dias + " dias juntos 💚";
+    `💚 ${dias} dias juntos`
+
+  atualizarContador();
+setInterval(atualizarContador, 1000 * 60 * 60);
 }
 
 
