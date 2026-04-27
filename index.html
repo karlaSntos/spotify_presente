@@ -16,7 +16,7 @@ body {
   overflow: hidden;
 }
 
-/* 🌫️ fundo blur */
+/* 🌫️ fundo */
 body::before {
   content: "";
   position: fixed;
@@ -27,7 +27,7 @@ body::before {
   z-index: -1;
 }
 
-/* 💥 tela inicial */
+/* 💥 overlay */
 .overlay {
   position: fixed;
   inset: 0;
@@ -66,9 +66,10 @@ body::before {
   object-fit: cover;
   border-radius: 14px;
   cursor: pointer;
+  position: relative;
 }
 
-/* 💬 mensagem na foto */
+/* 💬 mensagem foto */
 .msg-foto {
   position: absolute;
   top: 90px;
@@ -79,15 +80,9 @@ body::before {
   border-radius: 12px;
   font-size: 13px;
   display: none;
-  animation: aparecer 0.4s ease;
 }
 
-@keyframes aparecer {
-  from { transform: translateX(-50%) scale(0.8); opacity: 0; }
-  to { transform: translateX(-50%) scale(1); opacity: 1; }
-}
-
-/* 💬 textos */
+/* textos */
 h1 { font-size: 18px; margin: 15px 0 5px; }
 p { font-size: 13px; color: #d1d1d1; }
 
@@ -181,7 +176,7 @@ iframe {
 
   <p>amo amar você, de verdade… é tudo pra mim 🤍</p>
 
-  <div class="tocando">tocando agora: Papo de undaiá kkk</div>
+  <div class="tocando">tocando agora: Papo de Undaia kkk 💚</div>
 
   <div class="contador" id="contador"></div>
 
@@ -189,7 +184,7 @@ iframe {
     <div id="icone" class="triangle"></div>
   </div>
 
-  <iframe 
+  <iframe
     src="https://open.spotify.com/embed/track/4HQ4VFKOJRnTGZlYOOgrr6"
     width="100%" height="80">
   </iframe>
@@ -206,7 +201,7 @@ function entrar() {
   document.getElementById("card").classList.add("show");
 }
 
-/* 💚 mensagem foto */
+/* mensagem foto */
 function mostrarMensagem() {
   const msg = document.getElementById("msgFoto");
   msg.style.display = "block";
@@ -220,7 +215,7 @@ function mostrarMensagem() {
   }, 2000);
 }
 
-/* ▶️ player + corações */
+/* player */
 function toggleMusica() {
   const icone = document.getElementById("icone");
 
@@ -240,7 +235,7 @@ function toggleMusica() {
   }
 }
 
-/* 💗 corações */
+/* corações */
 function criarCoracao() {
   const coracao = document.createElement("div");
   coracao.classList.add("coracao");
@@ -253,21 +248,19 @@ function criarCoracao() {
   setTimeout(() => coracao.remove(), 3000);
 }
 
-/* ⏳ contador  */
+/* 💚 contador ARRUMADO */
 function atualizarContador() {
-  const inicio = new Date("2026-03-14");
+  const inicio = new Date(2026, 3, 14); // mês começa do 0
   const agora = new Date();
 
   const dias = Math.floor((agora - inicio) / (1000 * 60 * 60 * 24));
 
   document.getElementById("contador").innerText =
-    `💚 ${dias} dias juntos`
-
-  atualizarContador();
-setInterval(atualizarContador, 1000 * 60 * 60);
+    `💚 ${dias} dias juntos`;
 }
 
-
+/* 🔥 IMPORTANTE: chamar função */
+atualizarContador();
 
 </script>
 
