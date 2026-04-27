@@ -38,11 +38,6 @@ body::before {
   transition: 1s;
 }
 
-.overlay h2 {
-  font-weight: normal;
-  opacity: 0.8;
-}
-
 .card {
   background: rgba(18,18,18,0.8);
   backdrop-filter: blur(10px);
@@ -66,22 +61,35 @@ body::before {
   height: 250px;
   object-fit: cover;
   border-radius: 12px;
+  position: relative;
 }
 
-h1 {
-  font-size: 18px;
-  margin: 15px 0 5px;
-}
-
-p {
+.msg-foto {
+  position: absolute;
+  top: 90px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(0,0,0,0.6);
+  padding: 10px 15px;
+  border-radius: 10px;
   font-size: 13px;
-  color: #d1d1d1;
+  display: none;
 }
+
+h1 { font-size: 18px; margin: 15px 0 5px; }
+
+p { font-size: 13px; color: #d1d1d1; }
 
 .tocando {
   font-size: 12px;
   color: #1db954;
   margin-top: 10px;
+}
+
+.contador {
+  margin-top: 10px;
+  font-size: 12px;
+  color: #b3b3b3;
 }
 
 .play-button {
@@ -93,6 +101,7 @@ p {
   display: flex;
   align-items: center;
   justify-content: center;
+  cursor: pointer;
 }
 
 .triangle {
@@ -123,7 +132,7 @@ iframe {
   position: fixed;
   bottom: 0;
   font-size: 14px;
-  color: rgba(255, 77, 109, 0.5);
+  color: rgba(255, 77, 109, 0.6);
   animation: subir 4s linear forwards;
 }
 
@@ -143,16 +152,20 @@ iframe {
 
 <div class="card" id="card">
 
-<img src="foto.jpg" class="foto">
+<div style="position:relative;">
+  <img src="foto.jpg" class="foto" onclick="mostrarMensagem()">
+  <div class="msg-foto" id="msgFoto">eu te amo 💚</div>
+</div>
 
 <h1>Davi 💚</h1>
 
 <p>
-amo amar você, de verdade… é simples, mas ao mesmo tempo é tudo pra mim. 
-é tão leve, tão bom, parece que tudo fica mais tranquilo quando penso na gente 🤍
+amo amar você, de verdade… é tudo pra mim 🤍
 </p>
 
 <div class="tocando">tocando agora: nós dois ❤️</div>
+
+<div class="contador" id="contador"></div>
 
 <div class="play-button" onclick="toggleMusica()">
   <div id="icone" class="triangle"></div>
@@ -166,48 +179,66 @@ amo amar você, de verdade… é simples, mas ao mesmo tempo é tudo pra mim.
 </div>
 
 <script>
+
 function entrar() {
-  document.querySelector(".overlay").style.opacity = "0";
-  setTimeout(() => {
-    document.querySelector(".overlay").style.display = "none";
-    document.getElementById("card").classList.add("show");
-  }, 800);
+  document.querySelector(".overlay").style.display = "none";
+  document.getElementById("card").classList.add("show");
 }
 
-let tocando = false;
+/* 💚 MENSAGEM NA FOTO */
+function mostrarMensagem() {
+  const msg = document.getElementById("msgFoto");
+  msg.style.display = "block";
 
+  for (let i = 0; i < 6; i++) {
+    setTimeout(criarCoracao, i * 200);
+  }
+
+  setTimeout(() => {
+    msg.style.display = "none";
+  }, 2500);
+}
+
+/* 🎧 PLAYER */
 function toggleMusica() {
   const icone = document.getElementById("icone");
 
-  tocando = !tocando;
-
-  if (tocando) {
+  if (icone.className === "triangle") {
     icone.className = "pause";
     icone.innerHTML = '<div class="bar"></div><div class="bar"></div>';
-
-    for (let i = 0; i < 6; i++) {
-      setTimeout(criarCoracao, i * 300);
-    }
-
   } else {
     icone.className = "triangle";
     icone.innerHTML = "";
   }
 }
 
+/* 💗 CORAÇÕES */
 function criarCoracao() {
   const coracao = document.createElement("div");
   coracao.classList.add("coracao");
   coracao.innerText = "💗";
-
   coracao.style.left = Math.random() * window.innerWidth + "px";
-
   document.body.appendChild(coracao);
 
-  setTimeout(() => {
-    coracao.remove();
-  }, 4000);
+  setTimeout(() => coracao.remove(), 4000);
 }
+
+/* ⏳ CONTADOR */
+function atualizarContador() {
+  const inicio = new Date("2024-01-01"); // MUDA AQUI
+  const agora = new Date();
+
+  const diff = agora - inicio;
+
+  const dias = Math.floor(diff / (1000 * 60 * 60 * 24));
+
+  document.getElementById("contador").innerText =
+    dias + " dias juntos 💚";
+}
+
+setInterval(atualizarContador, 1000);
+atualizarContador();
+
 </script>
 
 </body>
